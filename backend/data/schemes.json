@@ -1,0 +1,533 @@
+[
+  {
+    "scheme_id": "pm-svanidhi",
+    "name": "PM Street Vendor's AtmaNirbhar Nidhi (PM SVANidhi)",
+    "short_name": "PM SVANidhi",
+    "description": "PM SVANidhi is a Central Sector Scheme aimed at providing affordable working capital loans to street vendors to resume their livelihoods that were adversely affected due to COVID-19 lockdowns.",
+    "scheme_type": "central",
+    "ministry": "Ministry of Housing and Urban Affairs",
+    "tags": [
+      "street vendor",
+      "micro credit",
+      "working capital loan",
+      "urban"
+    ],
+    "eligibility": {
+      "min_age": 18,
+      "max_age": null,
+      "max_annual_income_inr": null,
+      "gender": "any",
+      "marital_status": "any",
+      "category": [],
+      "eligible_states": [],
+      "is_pwd_required": false,
+      "is_bpl_required": false,
+      "is_student_required": false,
+      "is_farmer_required": false,
+      "has_misc_conditions": true,
+      "misc_conditions": [
+        "Must be engaged in street vending in urban areas on or before March 24, 2020",
+        "Possesses a valid Certificate of Vending or Identity Card issued by Urban Local Bodies (ULBs) or a Letter of Recommendation (LoR)"
+      ]
+    },
+    "benefits": [
+      {
+        "benefit_type": "financial",
+        "description": "Collateral-free working capital loan up to ₹10,000 for the first tranche with interest subsidy of 7% per annum on timely repayment.",
+        "amount_inr": 10000.0,
+        "frequency": "one_time"
+      }
+    ],
+    "application_url": "https://pmsvanidhi.mohua.gov.in/",
+    "documents_required": [
+      "Aadhaar Card",
+      "Certificate of Vending / Identity Card or Letter of Recommendation (LoR) from ULB",
+      "Bank Account details"
+    ],
+    "application_deadline": "Ongoing",
+    "source_url": "https://pmsvanidhi.mohua.gov.in/Schemes_PM_SVANidhi_Scheme_Details",
+    "scraped_at": "2026-10-24T20:29:38.209405+00:00",
+    "is_verified": false
+  },
+  {
+    "scheme_id": "pm-kisan",
+    "name": "Pradhan Mantri Kisan Samman Nidhi",
+    "short_name": "PM-KISAN",
+    "description": "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN) is a Central Sector scheme to provide financial assistance to all landholding farmer families across the country to supplement their financial needs in procuring various inputs related to agriculture and allied activities as well as domestic needs.",
+    "scheme_type": "central",
+    "ministry": "Ministry of Agriculture and Farmers Welfare",
+    "tags": [
+      "farmer",
+      "agriculture",
+      "financial assistance",
+      "income support"
+    ],
+    "eligibility": {
+      "min_age": null,
+      "max_age": null,
+      "max_annual_income_inr": null,
+      "gender": "any",
+      "marital_status": "any",
+      "category": [],
+      "eligible_states": [],
+      "is_pwd_required": false,
+      "is_bpl_required": false,
+      "is_student_required": false,
+      "is_farmer_required": true,
+      "has_misc_conditions": true,
+      "misc_conditions": [
+        "Must be a landholding farmer family with cultivable landholding in their names",
+        "No family member is an institutional landholder",
+        "No family member holds or has held constitutional posts",
+        "No family member is a former or present Minister, MP, MLA, MLC, Mayor, or District Panchayat Chairperson",
+        "No family member is a serving or retired officer/employee of Central/State Government, Ministries, Departments, or PSUs",
+        "No family member receives a monthly pension of Rs. 10,000 or more",
+        "No family member paid income tax in the last assessment year",
+        "No family member is a registered professional practicing as a doctor, engineer, lawyer, chartered accountant, or architect"
+      ]
+    },
+    "benefits": [
+      {
+        "benefit_type": "financial",
+        "description": "Financial assistance of Rs. 6,000 per annum provided in three equal installments of Rs. 2,000 every four months directly into the bank accounts of eligible farmer families.",
+        "amount_inr": 6000.0,
+        "frequency": "annual"
+      }
+    ],
+    "application_url": "https://pmkisan.gov.in/",
+    "documents_required": [
+      "Aadhaar Card",
+      "Proof of landholding ownership / Khasra Khatauni documents",
+      "Bank Account details linked with Aadhaar",
+      "Identity proof"
+    ],
+    "application_deadline": "Ongoing",
+    "source_url": "https://myscheme.gov.in/schemes/pm-kisan",
+    "scraped_at": "2026-10-24T21:28:47.201592+00:00",
+    "is_verified": false
+  },
+  {
+    "scheme_id": "ab-pmjay",
+    "name": "Ayushman Bharat Pradhan Mantri Jan Arogya Yojana",
+    "short_name": "AB PM-JAY",
+    "description": "A national public health insurance scheme providing free access to health insurance coverage for low-income earners (bottom 50% of the population) and all senior citizens aged 70 years and above, covering secondary and tertiary healthcare.",
+    "scheme_type": "central",
+    "ministry": "Ministry of Health and Family Welfare",
+    "tags": [
+      "health",
+      "health insurance",
+      "healthcare",
+      "hospitalization",
+      "senior citizens"
+    ],
+    "eligibility": {
+      "min_age": null,
+      "max_age": null,
+      "max_annual_income_inr": null,
+      "gender": "any",
+      "marital_status": "any",
+      "category": [],
+      "eligible_states": [],
+      "is_pwd_required": false,
+      "is_bpl_required": false,
+      "is_student_required": false,
+      "is_farmer_required": false,
+      "has_misc_conditions": false,
+      "misc_conditions": []
+    },
+    "benefits": [
+      {
+        "benefit_type": "service",
+        "description": "Free secondary healthcare for specialist treatment and tertiary healthcare for hospitalization",
+        "amount_inr": null,
+        "frequency": null
+      }
+    ],
+    "application_url": "https://www.pmjay.gov.in/",
+    "documents_required": [],
+    "application_deadline": "Ongoing",
+    "source_url": "https://en.wikipedia.org/wiki/Ayushman_Bharat_Yojana",
+    "scraped_at": "2026-10-24T20:47:45.630482+00:00",
+    "is_verified": false
+  },
+  {
+    "scheme_id": "pmay-u",
+    "name": "Pradhan Mantri Awas Yojana (Urban)",
+    "short_name": "PMAY-U",
+    "description": "Pradhan Mantri Awas Yojana (Urban) is a central government housing initiative in India aimed at providing affordable housing to urban residents.",
+    "scheme_type": "central",
+    "ministry": "Ministry of Housing and Urban Poverty Alleviation",
+    "tags": [
+      "housing",
+      "urban",
+      "affordable housing"
+    ],
+    "eligibility": {
+      "min_age": null,
+      "max_age": null,
+      "max_annual_income_inr": null,
+      "gender": "any",
+      "marital_status": "any",
+      "category": [],
+      "eligible_states": [],
+      "is_pwd_required": false,
+      "is_bpl_required": false,
+      "is_student_required": false,
+      "is_farmer_required": false,
+      "has_misc_conditions": false,
+      "misc_conditions": []
+    },
+    "benefits": [
+      {
+        "benefit_type": "in_kind",
+        "description": "Provision of affordable housing infrastructure for the urban population.",
+        "amount_inr": null,
+        "frequency": null
+      }
+    ],
+    "application_url": "https://pmaymis.gov.in/",
+    "documents_required": [],
+    "application_deadline": null,
+    "source_url": "https://en.wikipedia.org/wiki/Pradhan_Mantri_Awas_Yojana",
+    "scraped_at": "2026-10-24T20:47:58.234897+00:00",
+    "is_verified": false
+  },
+  {
+    "scheme_id": "pmmy",
+    "name": "Pradhan Mantri Mudra Yojana",
+    "short_name": "PMMY",
+    "description": "Pradhan Mantri Mudra Yojana is a scheme launched by the Government of India to provide loans up to 10 Lakhs to non-corporate, non-farm small and micro enterprises.",
+    "scheme_type": "central",
+    "ministry": "Ministry of Finance",
+    "tags": [
+      "loans",
+      "business",
+      "microfinance",
+      "entrepreneurship"
+    ],
+    "eligibility": {
+      "min_age": 18,
+      "max_age": null,
+      "max_annual_income_inr": null,
+      "gender": "any",
+      "marital_status": "any",
+      "category": [],
+      "eligible_states": [],
+      "is_pwd_required": false,
+      "is_bpl_required": false,
+      "is_student_required": false,
+      "is_farmer_required": false,
+      "has_misc_conditions": true,
+      "misc_conditions": [
+        "Must be a non-corporate, non-farm small or micro enterprise"
+      ]
+    },
+    "benefits": [
+      {
+        "benefit_type": "financial",
+        "description": "Collateral-free business loan up to ₹10,00,000 categorized into Shishu (up to ₹50,000), Kishor (₹50,000 to ₹5 Lakhs), and Tarun (₹5 Lakhs to ₹10 Lakhs)",
+        "amount_inr": 1000000.0,
+        "frequency": null
+      }
+    ],
+    "application_url": null,
+    "documents_required": [],
+    "application_deadline": "Ongoing",
+    "source_url": "https://en.wikipedia.org/wiki/Pradhan_Mantri_Mudra_Yojana",
+    "scraped_at": "2026-10-24T20:48:12.974578+00:00",
+    "is_verified": false
+  },
+  {
+    "scheme_id": "753dbf55-4db4-447d-810b-d06b03d81c15",
+    "name": "Sukanya Samriddhi Account",
+    "short_name": null,
+    "description": "A Government of India backed small savings scheme targeted at parents of girl children to encourage building a fund for their future education and welfare.",
+    "scheme_type": "central",
+    "ministry": null,
+    "tags": [
+      "savings",
+      "girl child",
+      "education",
+      "tax benefit"
+    ],
+    "eligibility": {
+      "min_age": 0,
+      "max_age": 10,
+      "max_annual_income_inr": null,
+      "gender": "female",
+      "marital_status": "any",
+      "category": [],
+      "eligible_states": [],
+      "is_pwd_required": false,
+      "is_bpl_required": false,
+      "is_student_required": false,
+      "is_farmer_required": false,
+      "has_misc_conditions": true,
+      "misc_conditions": [
+        "Only one account is allowed per girl child",
+        "Parents can open a maximum of two accounts for each of their children, with exceptions allowed for twins and triplets"
+      ]
+    },
+    "benefits": [
+      {
+        "benefit_type": "financial",
+        "description": "Interest rate of 8.2% per annum (for Jan-Mar 2024 quarter) along with tax benefits on savings",
+        "amount_inr": null,
+        "frequency": null
+      }
+    ],
+    "application_url": null,
+    "documents_required": [],
+    "application_deadline": null,
+    "source_url": "https://en.wikipedia.org/wiki/Sukanya_Samriddhi_Account",
+    "scraped_at": "2026-10-24T20:48:32.407690+00:00",
+    "is_verified": false
+  },
+  {
+    "scheme_id": "c4dd7bbf-9e48-4f91-91b3-e29240321ad5",
+    "name": "Atal Pension Yojana",
+    "short_name": "APY",
+    "description": "Atal Pension Yojana (APY), formerly known as Swavalamban Yojana, is a government-backed pension scheme in India targeted at workers in the unorganised sector to provide economic security after retirement.",
+    "scheme_type": "central",
+    "ministry": null,
+    "tags": [
+      "pension",
+      "unorganised sector",
+      "social security",
+      "retirement"
+    ],
+    "eligibility": {
+      "min_age": null,
+      "max_age": null,
+      "max_annual_income_inr": null,
+      "gender": "any",
+      "marital_status": "any",
+      "category": [],
+      "eligible_states": [],
+      "is_pwd_required": false,
+      "is_bpl_required": false,
+      "is_student_required": false,
+      "is_farmer_required": false,
+      "has_misc_conditions": true,
+      "misc_conditions": [
+        "Must be a worker in the unorganised sector",
+        "Must be enrolled in the National Pension Scheme (NPS)"
+      ]
+    },
+    "benefits": [
+      {
+        "benefit_type": "financial",
+        "description": "Government contribution of ₹1,000 per year to each NPS account",
+        "amount_inr": 1000.0,
+        "frequency": "annual"
+      }
+    ],
+    "application_url": "https://jansuraksha.gov.in/",
+    "documents_required": [],
+    "application_deadline": null,
+    "source_url": "https://en.wikipedia.org/wiki/Atal_Pension_Yojana",
+    "scraped_at": "2026-10-24T20:48:52.911885+00:00",
+    "is_verified": false
+  },
+  {
+    "scheme_id": "pmjjby",
+    "name": "Pradhan Mantri Jeevan Jyoti Bima Yojana",
+    "short_name": "PMJJBY",
+    "description": "Pradhan Mantri Jeevan Jyoti Bima Yojana is a Government-backed life insurance scheme in India providing coverage of ₹2 lakh in case of death due to any cause, for an annual premium of ₹436.",
+    "scheme_type": "central",
+    "ministry": "Ministry of Finance",
+    "tags": [
+      "life insurance",
+      "insurance",
+      "financial security",
+      "jansuraksha"
+    ],
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 50,
+      "max_annual_income_inr": null,
+      "gender": "any",
+      "marital_status": "any",
+      "category": [],
+      "eligible_states": [],
+      "is_pwd_required": false,
+      "is_bpl_required": false,
+      "is_student_required": false,
+      "is_farmer_required": false,
+      "has_misc_conditions": true,
+      "misc_conditions": [
+        "Must have a bank account",
+        "Must link Aadhaar Card to the participatory bank account"
+      ]
+    },
+    "benefits": [
+      {
+        "benefit_type": "financial",
+        "description": "Payment of ₹2 lakh to the nominee in case of death due to any cause",
+        "amount_inr": 200000.0,
+        "frequency": "one_time"
+      }
+    ],
+    "application_url": "https://jansuraksha.gov.in/",
+    "documents_required": [
+      "Aadhaar Card"
+    ],
+    "application_deadline": null,
+    "source_url": "https://en.wikipedia.org/wiki/Pradhan_Mantri_Jeevan_Jyoti_Bima_Yojana",
+    "scraped_at": "2026-10-24T20:49:07.928548+00:00",
+    "is_verified": false
+  },
+  {
+    "scheme_id": "pmsby",
+    "name": "Pradhan Mantri Suraksha Bima Yojana",
+    "short_name": "PMSBY",
+    "description": "A government-backed accident insurance scheme in India providing coverage for accidental death and disability to individuals holding a bank account.",
+    "scheme_type": "central",
+    "ministry": "Ministry of Finance",
+    "tags": [
+      "accident insurance",
+      "insurance",
+      "disability",
+      "financial security"
+    ],
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 70,
+      "max_annual_income_inr": null,
+      "gender": "any",
+      "marital_status": "any",
+      "category": [],
+      "eligible_states": [],
+      "is_pwd_required": false,
+      "is_bpl_required": false,
+      "is_student_required": false,
+      "is_farmer_required": false,
+      "has_misc_conditions": true,
+      "misc_conditions": [
+        "Must hold a savings bank account with auto-debit facility enabled for premium payment",
+        "Death due to suicide, alcohol, or drug abuse is excluded from insurance coverage",
+        "Claim is eligible only after 45 days of joining the scheme"
+      ]
+    },
+    "benefits": [
+      {
+        "benefit_type": "financial",
+        "description": "Coverage of ₹2 Lakh in case of accidental death or full disability (loss of use in both eyes, hands, or feet)",
+        "amount_inr": 200000.0,
+        "frequency": "one_time"
+      },
+      {
+        "benefit_type": "financial",
+        "description": "Coverage of ₹1 Lakh in case of partial permanent disability (loss of use in one eye, hand, or foot)",
+        "amount_inr": 100000.0,
+        "frequency": "one_time"
+      }
+    ],
+    "application_url": "https://nationalinsurance.nic.co.in/en/about-us/pradhan-mantri-suraksha-bima-yojana",
+    "documents_required": [],
+    "application_deadline": "Ongoing",
+    "source_url": "https://en.wikipedia.org/wiki/Pradhan_Mantri_Suraksha_Bima_Yojana",
+    "scraped_at": "2026-10-24T20:49:21.794136+00:00",
+    "is_verified": false
+  },
+  {
+    "scheme_id": "pmuy",
+    "name": "Pradhan Mantri Ujjwala Yojana",
+    "short_name": "PMUY",
+    "description": "Pradhan Mantri Ujjwala Yojana is a central government scheme launched in May 2016 to distribute clean cooking energy (LPG connections) to women belonging to Below Poverty Line (BPL) families.",
+    "scheme_type": "central",
+    "ministry": "Ministry of Petroleum and Natural Gas",
+    "tags": [
+      "lpg",
+      "energy",
+      "women",
+      "bpl",
+      "clean cooking"
+    ],
+    "eligibility": {
+      "min_age": null,
+      "max_age": null,
+      "max_annual_income_inr": null,
+      "gender": "female",
+      "marital_status": "any",
+      "category": [
+        "any"
+      ],
+      "eligible_states": [],
+      "is_pwd_required": false,
+      "is_bpl_required": true,
+      "is_student_required": false,
+      "is_farmer_required": false,
+      "has_misc_conditions": false,
+      "misc_conditions": []
+    },
+    "benefits": [
+      {
+        "benefit_type": "in_kind",
+        "description": "Distribution of LPG connections to women of Below Poverty Line (BPL) families.",
+        "amount_inr": null,
+        "frequency": "one_time"
+      }
+    ],
+    "application_url": "https://www.pmujjwalayojana.com/",
+    "documents_required": [],
+    "application_deadline": null,
+    "source_url": "https://en.wikipedia.org/wiki/Pradhan_Mantri_Ujjwala_Yojana",
+    "scraped_at": "2026-10-24T20:49:34.387748+00:00",
+    "is_verified": false
+  },
+  {
+    "scheme_id": "pm-kisan",
+    "name": "Pradhan Mantri Kisan Samman Nidhi",
+    "short_name": "PM-KISAN",
+    "description": "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN) is a Central Sector scheme that provides financial assistance to landholding farmer families across the country to support their agricultural and domestic needs.",
+    "scheme_type": "central",
+    "ministry": "Ministry of Agriculture and Farmers Welfare",
+    "tags": [
+      "agriculture",
+      "farmer",
+      "financial assistance",
+      "income support"
+    ],
+    "eligibility": {
+      "min_age": null,
+      "max_age": null,
+      "max_annual_income_inr": null,
+      "gender": "any",
+      "marital_status": "any",
+      "category": [],
+      "eligible_states": [],
+      "is_pwd_required": false,
+      "is_bpl_required": false,
+      "is_student_required": false,
+      "is_farmer_required": true,
+      "has_misc_conditions": true,
+      "misc_conditions": [
+        "Must own cultivable landholding in their name",
+        "No family member is an income tax payer in the last assessment year",
+        "No family member holds or held a constitutional post, or is a former/present Minister, MP, MLA, Mayor, or District Panchayat Chairperson",
+        "No family member is a serving or retired officer or employee of Central/State Government, PSEs, or regular employee of Local Bodies",
+        "No family member is a superannuated/retired pensioner receiving a monthly pension of Rs. 10,000 or more",
+        "No family member is a registered professional practitioner such as Doctor, Engineer, Lawyer, Chartered Accountant, or Architect"
+      ]
+    },
+    "benefits": [
+      {
+        "benefit_type": "financial",
+        "description": "Direct income support of Rs. 6,000 per annum provided in three equal installments of Rs. 2,000 every four months into the beneficiary bank account.",
+        "amount_inr": 6000.0,
+        "frequency": "annual"
+      }
+    ],
+    "application_url": "https://pmkisan.gov.in/",
+    "documents_required": [
+      "Aadhaar Card",
+      "Proof of landholding / Land record details",
+      "Bank Account Details"
+    ],
+    "application_deadline": "Ongoing",
+    "source_url": "https://myscheme.gov.in/schemes/pm-kisan",
+    "scraped_at": "2026-10-24T21:27:07.111288+00:00",
+    "is_verified": false
+  }
+]
