@@ -66,16 +66,52 @@
   header,
   nav,
   footer,
+  aside,
+  main,
   .no-print {
     display: none !important;
   }
 
   body {
     background: white !important;
-    font-size: 12pt;
+    color: black !important;
+    font-size: 11pt;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Ensure modal backdrop doesn't obscure print */
+  [role="dialog"] {
+    position: static !important;
+    inset: auto !important;
+    background: none !important;
+    padding: 0 !important;
+  }
+
+  #printableSlipA4,
+  #printableSlipThermal {
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
   }
 
   .print-break {
     page-break-before: always;
   }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(51, 65, 85, 0.8);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(71, 85, 105, 1);
 }
