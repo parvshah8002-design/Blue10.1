@@ -368,10 +368,17 @@ export class SchemeNavigatorApiClient {
 
   private resolveBaseUrl(): string {
     const envUrl =
-      (import.meta as any).env?.VITE_API_URL ||
-      (import.meta as any).env?.NEXT_PUBLIC_API_URL ||
-      'http://localhost:8000';
-    return String(envUrl).replace(/\/$/, '');
+      (import.meta as any).env?.VITE_API_URL ??
+      (import.meta as any).env?.NEXT_PUBLIC_API_URL;
+
+    if (envUrl !== undefined && envUrl !== null && envUrl !== '') {
+      return String(envUrl).replace(/\/$/, '');
+    }
+    // In production (e.g. deployed on Vercel), default to same-origin relative URLs
+    if ((import.meta as any).env?.PROD) {
+      return '';
+    }
+    return 'http://localhost:8000';
   }
 
   public getBaseUrl(): string {
