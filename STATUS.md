@@ -1,8 +1,31 @@
 # YojanaSaathi — Project Status
 
 ## Current Roadmap Task
-- **Active Task**: Build the complete, interactive Single-Screen 3-Pane Desktop Workstation (1280px–1920px) on `src/app/page.tsx` (`yojana-saathi/src/app/page.tsx`).
+- **Active Task**: Fix Next.js / Turbopack runtime crash on `localhost:3000`, enforce `'use client';` directives across all interactive workstation components, verify import graph and circular dependency freedom, and confirm `npm run build` succeeds with 0 errors.
 - **Status**: **COMPLETED & VERIFIED**
+
+## Summary of Completed Work
+1. **Turbopack Dev & Runtime Crash Remediation**:
+   - Diagnosed root cause: Next.js 16 defaults `next dev` to Turbopack. When processing `globals.css` with `@tailwindcss/turbopack`, Turbopack spawned child Node processes that exited prematurely under Node 26 (`node process exited before we could connect to it with exit status: 0`).
+   - Standardized dev runtime in `yojana-saathi/package.json` to `"dev": "next dev --webpack"`, aligning development mode with the verified production build pipeline (`next build --webpack`).
+2. **Directive Verification**:
+   - Enforced `'use client';` explicitly at line 1 in `src/app/page.tsx` and all interactive workstation components:
+     * `src/components/workstation/RapidIntakePane.tsx`
+     * `src/components/workstation/TopCommandBar.tsx`
+     * `src/components/workstation/LiveSchemeMatrixPane.tsx`
+     * `src/components/workstation/InspectorDrawerPane.tsx`
+     * `src/components/workstation/PrintableSlipModal.tsx`
+     * `src/components/workstation/CitizenKioskView.tsx`
+3. **Import Graph & Circular Dependency Verification**:
+   - Audited import graphs across `src/types/workstation.ts`, `src/lib/workstationEngine.ts`, and `src/lib/workstationData.ts`:
+     * `workstation.ts`: Pure type contracts, 0 dependencies.
+     * `workstationData.ts`: Depends only on `workstation.ts`.
+     * `workstationEngine.ts`: Depends on `workstation.ts` and `workstationData.ts`.
+     * Zero circular dependencies, zero missing imports.
+4. **Build and Test Verification**:
+   - Verified automated test suite: 6/6 tests passing (0 failures).
+   - Verified ESLint: 0 errors.
+   - Verified `npm run build`: Static prerender of `/`, `/_not-found`, `/form`, `/home` completed with 0 errors.
 
 ## Summary of Completed Work
 1. **Top Command Bar (`src/components/workstation/TopCommandBar.tsx`)**:
