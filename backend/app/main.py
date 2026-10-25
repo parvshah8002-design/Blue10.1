@@ -69,6 +69,24 @@ app.add_middleware(
 app.include_router(api_router, prefix="/api/v1")
 
 
+@app.get("/", tags=["Root"])
+def root():
+    return {
+        "message": "Welcome to Scheme Eligibility Navigator API (SchemeSaathi)",
+        "version": "0.1.0",
+        "docs": "/docs",
+        "health": "/health",
+        "frontend": "http://localhost:5173",
+        "endpoints": {
+            "schemes": "/api/v1/schemes/",
+            "suggest": "/api/v1/schemes/suggest",
+            "eligibility_check": "/api/v1/eligibility/check",
+            "scrape_single": "/api/v1/scrape/single",
+            "scrape_bulk": "/api/v1/scrape/bulk",
+        },
+    }
+
+
 @app.get("/health", tags=["Health"])
 def health_check():
     return {"status": "ok", "env": settings.app_env, "db_schemes": count_schemes()}
