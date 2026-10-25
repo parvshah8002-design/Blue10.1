@@ -1,9 +1,9 @@
 [
   {
     "scheme_id": "pm-svanidhi",
-    "name": "PM Street Vendor's AtmaNirbhar Nidhi (PM SVANidhi)",
+    "name": "PM Street Vendor's AtmaNirbhar Nidhi",
     "short_name": "PM SVANidhi",
-    "description": "PM SVANidhi is a Central Sector Scheme aimed at providing affordable working capital loans to street vendors to resume their livelihoods that were adversely affected due to COVID-19 lockdowns.",
+    "description": "PM Street Vendor's AtmaNirbhar Nidhi (PM SVANidhi) is a special micro-credit facility scheme that provides affordable collateral-free working capital loans to street vendors to resume their livelihoods.",
     "scheme_type": "central",
     "ministry": "Ministry of Housing and Urban Affairs",
     "tags": [
@@ -26,41 +26,47 @@
       "is_farmer_required": false,
       "has_misc_conditions": true,
       "misc_conditions": [
-        "Must be engaged in street vending in urban areas on or before March 24, 2020",
         "Possesses a valid Certificate of Vending or Identity Card issued by Urban Local Bodies (ULBs) or a Letter of Recommendation (LoR)"
       ]
     },
     "benefits": [
       {
         "benefit_type": "financial",
-        "description": "Collateral-free working capital loan up to ₹10,000 for the first tranche with interest subsidy of 7% per annum on timely repayment.",
+        "description": "Collateral-free working capital loan up to ₹10,000 for 1st tranche, ₹20,000 for 2nd tranche, and ₹50,000 for 3rd tranche upon timely repayment.",
         "amount_inr": 10000.0,
         "frequency": "one_time"
+      },
+      {
+        "benefit_type": "financial",
+        "description": "Interest subsidy at 7% per annum credited on a quarterly basis for timely or early repayment.",
+        "amount_inr": null,
+        "frequency": "quarterly"
       }
     ],
     "application_url": "https://pmsvanidhi.mohua.gov.in/",
     "documents_required": [
       "Aadhaar Card",
-      "Certificate of Vending / Identity Card or Letter of Recommendation (LoR) from ULB",
+      "Voter ID / Driving License / PAN Card",
+      "Certificate of Vending or Letter of Recommendation from ULB/TVC",
       "Bank Account details"
     ],
     "application_deadline": "Ongoing",
-    "source_url": "https://pmsvanidhi.mohua.gov.in/Schemes_PM_SVANidhi_Scheme_Details",
-    "scraped_at": "2026-10-24T20:29:38.209405+00:00",
+    "source_url": "https://myscheme.gov.in/schemes/pm-svanidhi",
+    "scraped_at": "2026-10-25T04:33:59.918492+00:00",
     "is_verified": false
   },
   {
     "scheme_id": "pm-kisan",
     "name": "Pradhan Mantri Kisan Samman Nidhi",
     "short_name": "PM-KISAN",
-    "description": "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN) is a Central Sector scheme to provide financial assistance to all landholding farmer families across the country to supplement their financial needs in procuring various inputs related to agriculture and allied activities as well as domestic needs.",
+    "description": "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN) is a Central Sector Scheme to provide financial support to all landholding farmer families across the country to assist with agricultural inputs and domestic needs.",
     "scheme_type": "central",
     "ministry": "Ministry of Agriculture and Farmers Welfare",
     "tags": [
-      "farmer",
-      "agriculture",
-      "financial assistance",
-      "income support"
+      "Farmer Support",
+      "Financial Assistance",
+      "Income Support",
+      "Agriculture"
     ],
     "eligibility": {
       "min_age": null,
@@ -76,20 +82,16 @@
       "is_farmer_required": true,
       "has_misc_conditions": true,
       "misc_conditions": [
-        "Must be a landholding farmer family with cultivable landholding in their names",
-        "No family member is an institutional landholder",
-        "No family member holds or has held constitutional posts",
-        "No family member is a former or present Minister, MP, MLA, MLC, Mayor, or District Panchayat Chairperson",
-        "No family member is a serving or retired officer/employee of Central/State Government, Ministries, Departments, or PSUs",
-        "No family member receives a monthly pension of Rs. 10,000 or more",
-        "No family member paid income tax in the last assessment year",
-        "No family member is a registered professional practicing as a doctor, engineer, lawyer, chartered accountant, or architect"
+        "Applicant family must own cultivable landholdings",
+        "No family member is an income tax payer in the last assessment year",
+        "Applicant or family member must not be an institutional landholder",
+        "Applicant or family member must not be a serving or retired officer/employee of Central/State Government or PSUs"
       ]
     },
     "benefits": [
       {
         "benefit_type": "financial",
-        "description": "Financial assistance of Rs. 6,000 per annum provided in three equal installments of Rs. 2,000 every four months directly into the bank accounts of eligible farmer families.",
+        "description": "Financial benefit of ₹6,000 per year transferred directly into the bank accounts of beneficiary families in three equal installments of ₹2,000 every four months.",
         "amount_inr": 6000.0,
         "frequency": "annual"
       }
@@ -97,13 +99,13 @@
     "application_url": "https://pmkisan.gov.in/",
     "documents_required": [
       "Aadhaar Card",
-      "Proof of landholding ownership / Khasra Khatauni documents",
-      "Bank Account details linked with Aadhaar",
-      "Identity proof"
+      "Land ownership document / Khasra Khatauni",
+      "Bank Account Details",
+      "Mobile Number"
     ],
     "application_deadline": "Ongoing",
     "source_url": "https://myscheme.gov.in/schemes/pm-kisan",
-    "scraped_at": "2026-10-24T21:28:47.201592+00:00",
+    "scraped_at": "2026-10-25T04:34:13.127472+00:00",
     "is_verified": false
   },
   {
@@ -480,12 +482,12 @@
     "scheme_id": "pm-kisan",
     "name": "Pradhan Mantri Kisan Samman Nidhi",
     "short_name": "PM-KISAN",
-    "description": "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN) is a Central Sector scheme that provides financial assistance to landholding farmer families across the country to support their agricultural and domestic needs.",
+    "description": "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN) is a Central Sector scheme to provide income support to all landholding farmers' families across the country to supplement their financial needs for procuring various agricultural inputs and domestic needs.",
     "scheme_type": "central",
     "ministry": "Ministry of Agriculture and Farmers Welfare",
     "tags": [
+      "farmers",
       "agriculture",
-      "farmer",
       "financial assistance",
       "income support"
     ],
@@ -503,31 +505,26 @@
       "is_farmer_required": true,
       "has_misc_conditions": true,
       "misc_conditions": [
-        "Must own cultivable landholding in their name",
-        "No family member is an income tax payer in the last assessment year",
-        "No family member holds or held a constitutional post, or is a former/present Minister, MP, MLA, Mayor, or District Panchayat Chairperson",
-        "No family member is a serving or retired officer or employee of Central/State Government, PSEs, or regular employee of Local Bodies",
-        "No family member is a superannuated/retired pensioner receiving a monthly pension of Rs. 10,000 or more",
-        "No family member is a registered professional practitioner such as Doctor, Engineer, Lawyer, Chartered Accountant, or Architect"
+        "Must be a landholding farmer family with cultivable land in their name",
+        "No family member is an income tax payer",
+        "No family member is a serving or retired government officer or employee"
       ]
     },
     "benefits": [
       {
         "benefit_type": "financial",
-        "description": "Direct income support of Rs. 6,000 per annum provided in three equal installments of Rs. 2,000 every four months into the beneficiary bank account.",
+        "description": "Financial benefit of Rs. 6,000/- per year payable in three equal installments of Rs. 2,000/- every four months directly into the bank accounts of beneficiary families.",
         "amount_inr": 6000.0,
         "frequency": "annual"
       }
     ],
     "application_url": "https://pmkisan.gov.in/",
     "documents_required": [
-      "Aadhaar Card",
-      "Proof of landholding / Land record details",
-      "Bank Account Details"
+      "Aadhaar Card",      "Bank account details"
     ],
     "application_deadline": "Ongoing",
     "source_url": "https://myscheme.gov.in/schemes/pm-kisan",
-    "scraped_at": "2026-10-24T21:27:07.111288+00:00",
+    "scraped_at": "2026-10-25T04:34:26.985808+00:00",
     "is_verified": false
   }
 ]

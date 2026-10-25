@@ -39,10 +39,15 @@ import {
   RefreshCw,
   Filter,
   AlertTriangle,
-  Check
+  Check,
+  Lightbulb,
+  Loader2,
+  RotateCcw,
+  Compass
 } from 'lucide-react';
 import { DEMO_PERSONAS, DemoPersona } from '../data/personas';
 import { DisplayCards, DisplayCard } from './ui/display-cards';
+import { SchemeSuggestionResponse, SuggestedSchemeItem } from '../types/scheme';
 
 interface DashboardProps {
   currentUser: UserAccount | null;
@@ -63,6 +68,7 @@ interface DashboardProps {
   onSortChange: (sortBy: SortCriteria) => void;
   currentSortBy: SortCriteria;
   onSchemeImported?: (scheme: SchemeSchema) => void;
+  onUpdateProfile?: (hints: Partial<UserProfile>) => void;
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({
@@ -78,7 +84,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
   onSelectPersona,
   onSortChange,
   currentSortBy,
-  onSchemeImported
+  onSchemeImported,
+  onUpdateProfile
 }) => {
   const t = TRANSLATIONS[currentLang];
   const [searchQuery, setSearchQuery] = useState('');
@@ -92,6 +99,70 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const [apiConnected, setApiConnected] = useState<boolean>(false);
   const [isCheckingApi, setIsCheckingApi] = useState<boolean>(false);
   const [unconfirmedMiscMap, setUnconfirmedMiscMap] = useState<Record<string, string[]>>({});
+
+  // Need-based AI Shortlisting state
+  const [needQuery, setNeedQuery] = useState('');
+  const [isSuggesting, setIsSuggesting] = useState(false);
+  const [suggestionResult, setSuggestionResult] = useState<SchemeSuggestionResponse | null>(null);
+  const [hintsApplied, setHintsApplied] = useState(false);
+  const [needError, setNeedError] = useState<string | null>(null);
+
+  const NEED_EXAMPLES = [
+    { label: "Small farmer needing yearly income support", icon: "🌾" },
+    { label: "5 Lakh free hospital treatment for my family", icon: "🏥" },
+    { label: "Collateral-free loan to start a small business", icon: "💼" },
+    { label: "Savings scheme for my young daughter's future", icon: "👧" }
+  ];
+
+  const handleNeedSearch = async (overrideQuery?: string) => {
+    const q = (overrideQuery ?? needQuery).trim();
+    if (q.length < 3) return;
+    if (overrideQuery) {
+      setNeedQuery(overrideQuery);
+    }
+    setIsSuggesting(true);
+    setNeedError(null);
+    setHintsApplied(false);
+    try {
+      const res = await schemeNavigatorApi.suggestSchemes(q, profile);
+      setSuggestionResult(res);
+    } catch (err: any) {
+      console.error('Failed to get need-based suggestions', err);
+      setNeedError('Could not fetch recommendations. Please try again.');
+    } finally {
+      setIsSuggesting(false);
+    }
+  };
+
+  const handleApplyHints = () => {
+    if (!suggestionResult?.extracted_profile_hints || !onUpdateProfile) return;
+    const h = suggestionResult.extracted_profile_hints;
+    const patch: Partial<UserProfile> = {};
+    if (h.is_farmer !== undefined) {
+      patch.is_farmer = Boolean(h.is_farmer);
+      if (h.is_farmer) patch.occupation = 'farmer';
+    }
+    if (h.is_student !== undefined) {
+      patch.is_student = Boolean(h.is_student);
+      if (h.is_student) patch.occupation = 'student';
+    }
+    if (h.gender) patch.gender = h.gender;
+    if (h.age) patch.age = Number(h.age);
+    if (h.is_bpl !== undefined) patch.is_bpl = Boolean(h.is_bpl);
+    if (h.is_pwd !== undefined) patch.is_pwd = Boolean(h.is_pwd);
+    if (h.annual_income_inr) patch.annualFamilyIncome = Number(h.annual_income_inr);
+    if (h.state) patch.state = String(h.state);
+
+    onUpdateProfile(patch);
+    setHintsApplied(true);
+  };
+
+  const handleClearNeedSearch = () => {
+    setNeedQuery('');
+    setSuggestionResult(null);
+    setHintsApplied(false);
+    setNeedError(null);
+  };
 
   const toggleMiscCondition = (schemeId: string, condition: string) => {
     setUnconfirmedMiscMap(prev => {
@@ -328,6 +399,337 @@ export const Dashboard: React.FC<DashboardProps> = ({
             </button>
           ))}
         </div>
+      </div>
+
+      {/* ------------------------------------------------------------- */}
+      {/* User Need-Based Scheme Shortlisting (Natural Language AI) */}
+      {/* ------------------------------------------------------------- */}
+      <div className="rounded-2xl bg-gradient-to-br from-white via-slate-50/70 to-teal-50/30 dark:from-slate-900/90 dark:via-slate-900/60 dark:to-teal-950/20 border border-teal-200/70 dark:border-teal-800/50 shadow-md dark:shadow-none p-5 sm:p-6 space-y-4 relative overflow-hidden">
+        {/* Subtle decorative glow */}
+        <div className="absolute -top-12 -right-12 w-48 h-48 bg-teal-400/10 dark:bg-teal-500/10 rounded-full blur-2xl pointer-events-none" />
+
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-10">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-[#168A83]/10 dark:bg-teal-500/20 text-[#168A83] dark:text-teal-300">
+              <Sparkles className="h-5 w-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="text-base sm:text-lg font-bold text-[#173B67] dark:text-teal-200 font-heading">
+                  Describe Your Situation / Need (AI Shortlister)
+                </h2>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-teal-500 text-white shadow-xs">
+                  Gemma AI
+                </span>
+              </div>
+              <p className="text-xs text-[#667085] dark:text-slate-400 mt-0.5">
+                Tell us what you or your family need in your own words — our AI shortlists the highest-impact schemes and verifies eligibility instantly.
+              </p>
+            </div>
+          </div>
+
+          {suggestionResult && (
+            <button
+              onClick={handleClearNeedSearch}
+              className="self-start sm:self-auto px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-colors flex items-center gap-1.5 cursor-pointer"
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+              <span>Reset AI Search</span>
+            </button>
+          )}
+        </div>
+
+        {/* Input & Action */}
+        <div className="relative z-10 space-y-3">
+          <div className="relative flex flex-col sm:flex-row gap-2">
+            <div className="relative flex-1">
+              <textarea
+                value={needQuery}
+                onChange={e => setNeedQuery(e.target.value)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleNeedSearch();
+                  }
+                }}
+                rows={2}
+                placeholder="Describe your situation in your own words (e.g., 'I am a farmer looking for yearly financial aid', 'Need health cover of 5 lakhs for my family', or 'Small business loan without collateral')..."
+                className="w-full px-4 py-3 text-xs sm:text-sm rounded-xl bg-white dark:bg-slate-950/80 border border-[#CBD5E1] dark:border-slate-700 text-[#173B67] dark:text-slate-100 placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#168A83] focus:border-transparent transition-all shadow-inner resize-none"
+              />
+            </div>
+            <button
+              onClick={() => handleNeedSearch()}
+              disabled={isSuggesting || needQuery.trim().length < 3}
+              className="sm:w-56 px-5 py-3 rounded-xl bg-gradient-to-r from-[#173B67] to-[#168A83] hover:from-[#132e52] hover:to-[#12726c] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shrink-0 active:scale-[0.98]"
+            >
+              {isSuggesting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin text-teal-200" />
+                  <span>Matching Schemes...</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles className="h-4 w-4 text-teal-300" />
+                  <span>Find Best Schemes ✨</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Quick Example Chips */}
+          <div className="flex flex-wrap items-center gap-1.5 pt-1">
+            <span className="text-[11px] font-semibold text-[#667085] dark:text-slate-400 mr-1 flex items-center gap-1">
+              <Lightbulb className="h-3 w-3 text-amber-500" />
+              <span>Try 1-Click Need Examples:</span>
+            </span>
+            {NEED_EXAMPLES.map((ex, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => handleNeedSearch(ex.label)}
+                disabled={isSuggesting}
+                className="px-2.5 py-1 rounded-lg bg-white/80 dark:bg-slate-800/80 hover:bg-teal-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 hover:border-teal-400 dark:hover:border-teal-500 text-[11px] text-[#173B67] dark:text-teal-300 font-medium transition-all shadow-2xs hover:scale-[1.02] cursor-pointer flex items-center gap-1.5"
+              >
+                <span>{ex.icon}</span>
+                <span>{ex.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {needError && (
+            <div className="text-xs text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
+              <AlertTriangle className="h-3.5 w-3.5" />
+              <span>{needError}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Results Area */}
+        {suggestionResult && (
+          <div className="pt-3 border-t border-teal-100 dark:border-slate-800 space-y-4 animate-fadeIn">
+            {/* Needs Tags & Hints banner */}
+            <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-teal-50/70 dark:bg-teal-950/40 border border-teal-200/80 dark:border-teal-800/60 text-xs">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-bold text-[#173B67] dark:text-teal-300 flex items-center gap-1.5">
+                  <Compass className="h-3.5 w-3.5 text-[#168A83]" />
+                  <span>Identified Needs:</span>
+                </span>
+                {suggestionResult.understood_needs.map((nd, i) => (
+                  <span
+                    key={i}
+                    className="px-2.5 py-0.5 rounded-full bg-white dark:bg-slate-900 border border-teal-300 dark:border-teal-700 text-[#168A83] dark:text-teal-300 font-bold text-[11px]"
+                  >
+                    {nd}
+                  </span>
+                ))}
+              </div>
+
+              {/* Extracted Profile Hints */}
+              {Object.keys(suggestionResult.extracted_profile_hints || {}).length > 0 && (
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] text-[#667085] dark:text-slate-400">
+                    AI detected traits:{' '}
+                    <strong className="text-slate-800 dark:text-slate-200">
+                      {Object.entries(suggestionResult.extracted_profile_hints)
+                        .map(([k, v]) => `${k.replace('is_', '')}: ${v}`)
+                        .join(', ')}
+                    </strong>
+                  </span>
+                  {onUpdateProfile && (
+                    <button
+                      type="button"
+                      onClick={handleApplyHints}
+                      disabled={hintsApplied}
+                      className="px-2.5 py-1 rounded-md bg-[#168A83] hover:bg-teal-700 text-white font-bold text-[11px] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-75 disabled:cursor-default"
+                    >
+                      {hintsApplied ? (
+                        <>
+                          <Check className="h-3 w-3" />
+                          <span>Applied to Profile</span>
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="h-3 w-3" />
+                          <span>Apply Traits to Profile</span>
+                        </>
+                      )}
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Shortlisted Schemes Grid */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#173B67] dark:text-teal-300 flex items-center gap-1.5">
+                  <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+                  <span>Top AI Recommendations for this Need ({suggestionResult.recommendations.length})</span>
+                </span>
+                <span className="text-[11px] text-[#667085] dark:text-slate-400">
+                  Ranked by contextual need relevance & eligibility
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {suggestionResult.recommendations.map((item, idx) => {
+                  const matchPct = Math.round((item.relevance_score || 0.8) * 100);
+                  const elig = item.eligibility_result;
+                  const isEligible = elig ? elig.is_eligible : true;
+                  const targetScheme = evaluatedSchemes.find(
+                    e => e.scheme.id === item.scheme.scheme_id || e.scheme.id === item.scheme.id
+                  )?.scheme;
+
+                  const miscChecks = elig?.misc_conditions_to_verify || item.scheme.eligibility?.misc_conditions || [];
+                  const unconfirmedMisc = unconfirmedMiscMap[item.scheme.scheme_id || item.scheme.id] || [];
+
+                  return (
+                    <div
+                      key={item.scheme.scheme_id || idx}
+                      className="p-4 rounded-xl bg-white dark:bg-slate-900 border-2 border-teal-500/40 dark:border-teal-700/50 shadow-sm hover:shadow-md transition-all space-y-3 flex flex-col justify-between"
+                    >
+                      <div className="space-y-2.5">
+                        {/* Header badge & Title */}
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="text-xs font-bold text-[#168A83] dark:text-teal-400">
+                                {item.scheme.short_name || item.scheme.shortName || 'Govt Scheme'}
+                              </span>
+                              <span className="text-[#667085]">•</span>
+                              <span className="text-[11px] text-[#667085] dark:text-slate-400 line-clamp-1">
+                                {item.scheme.ministry || item.scheme.department || 'Government of India'}
+                              </span>
+                            </div>
+                            <h3 className="text-sm font-bold text-[#173B67] dark:text-slate-100 mt-0.5 line-clamp-1">
+                              {item.scheme.name || item.scheme.title_en}
+                            </h3>
+                          </div>
+                          <span className="px-2.5 py-1 rounded-full text-xs font-black bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-700 shrink-0">
+                            {matchPct}% Need Match
+                          </span>
+                        </div>
+
+                        {/* AI Why Recommended Callout Box */}
+                        <div className="p-3 rounded-lg bg-gradient-to-r from-teal-500/10 via-emerald-500/5 to-transparent border-l-4 border-[#168A83] dark:border-teal-400 space-y-1">
+                          <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#168A83] dark:text-teal-300 uppercase tracking-wider">
+                            <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+                            <span>AI Recommendation Rationale</span>
+                          </div>
+                          <p className="text-xs text-[#263445] dark:text-slate-200 leading-relaxed font-medium">
+                            {item.why_recommended}
+                          </p>
+                        </div>
+
+                        {/* Benefit snippet */}
+                        <div className="flex items-center gap-2 text-xs text-[#263445] dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-lg border border-slate-200/80 dark:border-slate-800">
+                          <CheckCircle2 className="h-4 w-4 text-[#168A83] dark:text-teal-400 shrink-0" />
+                          <span className="line-clamp-2">
+                            <strong>Benefit:</strong>{' '}
+                            {Array.isArray(item.scheme.benefits) && item.scheme.benefits.length > 0
+                              ? typeof item.scheme.benefits[0] === 'string'
+                                ? item.scheme.benefits[0]
+                                : item.scheme.benefits[0].description
+                              : item.scheme.benefit || item.scheme.description}
+                          </span>
+                        </div>
+
+                        {/* Eligibility Status pill */}
+                        {elig && (
+                          <div className="flex items-center gap-2 text-xs">
+                            <span
+                              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-bold text-[11px] ${
+                                isEligible
+                                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400'
+                                  : 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-400'
+                              }`}
+                            >
+                              {isEligible ? (
+                                <>
+                                  <Check className="h-3 w-3" />
+                                  <span>Likely Eligible</span>
+                                </>
+                              ) : (
+                                <>
+                                  <AlertTriangle className="h-3 w-3" />
+                                  <span>Near Miss</span>
+                                </>
+                              )}
+                            </span>
+                            {!isEligible && elig.failed_criteria?.length > 0 && (
+                              <span className="text-[11px] text-amber-700 dark:text-amber-400 line-clamp-1">
+                                Gap: {elig.failed_criteria.join('; ')}
+                              </span>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Two-Tier Quick Final Check (misc conditions) */}
+                        {miscChecks.length > 0 && (
+                          <div className="p-2.5 rounded-lg bg-teal-50/50 dark:bg-slate-800/80 border border-teal-200/60 dark:border-slate-700 space-y-1.5 text-xs">
+                            <div className="text-[11px] font-bold text-teal-800 dark:text-teal-300 flex items-center justify-between">
+                              <span>Tier 2: Quick Final Check ({miscChecks.length})</span>
+                              <span className="text-[10px] text-slate-500 font-normal">
+                                Uncheck if you do NOT meet
+                              </span>
+                            </div>
+                            <div className="space-y-1">
+                              {miscChecks.map((cond: string, cIdx: number) => {
+                                const schemeKey = item.scheme.scheme_id || item.scheme.id;
+                                const isUnchecked = unconfirmedMisc.includes(cond);
+                                return (
+                                  <label
+                                    key={cIdx}
+                                    className="flex items-start gap-2 text-[11px] text-slate-700 dark:text-slate-300 cursor-pointer hover:opacity-90 select-none"
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      checked={!isUnchecked}
+                                      onChange={() => toggleMiscCondition(schemeKey, cond)}
+                                      className="mt-0.5 rounded text-[#168A83] focus:ring-teal-500"
+                                    />
+                                    <span>{cond}</span>
+                                  </label>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Card Actions */}
+                      <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
+                        {targetScheme ? (
+                          <button
+                            type="button"
+                            onClick={() => onSelectScheme(targetScheme)}
+                            className="text-xs font-bold text-[#168A83] hover:text-[#173B67] dark:text-teal-300 hover:underline flex items-center gap-1 cursor-pointer"
+                          >
+                            <span>Full Details & Rules</span>
+                            <ArrowRight className="h-3 w-3" />
+                          </button>
+                        ) : (
+                          <span className="text-xs text-slate-400">Verified Scheme</span>
+                        )}
+
+                        {(item.scheme.application_url || item.scheme.official_apply_url || item.scheme.source_url) && (
+                          <a
+                            href={item.scheme.application_url || item.scheme.official_apply_url || item.scheme.source_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3 py-1.5 rounded-lg bg-[#168A83] hover:bg-teal-700 text-white font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
+                          >
+                            <span>Apply Official ↗</span>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Summary Count Cards (Actual Computed Counts Only) */}

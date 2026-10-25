@@ -20,28 +20,10 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import Optional
 
-from app.schemas.scheme import EligibilityResult
+from app.schemas.scheme import EligibilityResult, UserProfile
 from app.core.store import load_all
 
 router = APIRouter()
-
-
-# ---------------------------------------------------------------------------
-# Request model — user profile
-# ---------------------------------------------------------------------------
-
-class UserProfile(BaseModel):
-    age: int
-    annual_income_inr: float
-    gender: str                             # "male" | "female" | "transgender" | "any"
-    state: str                              # 2-letter code e.g. "MH"
-    category: str                           # "general" | "obc" | "sc" | "st" | "ews"
-    marital_status: str                     # "single" | "married" | "widowed" | "divorced" | "any"
-    is_pwd: bool = False
-    is_bpl: bool = False
-    is_student: bool = False
-    is_farmer: bool = False
-    needs_description: Optional[str] = None  # Free text for RAG search (Stage 3)
 
 
 # ---------------------------------------------------------------------------

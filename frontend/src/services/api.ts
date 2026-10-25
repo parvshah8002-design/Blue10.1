@@ -5,9 +5,11 @@
  * Supports Two-Tier Progressive Filtering and deterministic offline fallback.
  */
 
-import { Scheme, UserProfile, EligibilityRule, RequiredDocument, UserPriority } from '../types/scheme';
+import { Scheme, UserProfile, EligibilityRule, RequiredDocument, UserPriority, SuggestedSchemeItem, SchemeSuggestionResponse } from '../types/scheme';
 import { VERIFIED_SCHEMES } from '../data/schemes';
 import { evaluateAllSchemes } from '../engine/evaluator';
+
+export type { SuggestedSchemeItem, SchemeSuggestionResponse };
 
 export interface BackendUserProfile {
   age: number;
@@ -685,6 +687,119 @@ export class SchemeNavigatorApiClient {
   }
 
   /**
+   * 6. POST /api/v1/schemes/suggest
+   * User Need-Based Scheme Shortlisting (Natural Language AI Recommendation)
+   */
+  public async suggestSchemes(query: string, profile?: UserProfile): Promise<SchemeSuggestionResponse> {
+    const payload: any = { query };
+    if (profile) {
+      payload.user_profile = this.toBackendUserProfile(profile);
+    }
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      const res = await fetch(`${this.baseUrl}/api/v1/schemes/suggest`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (res.ok) {
+        const data = await res.json();
+        this.isBackendHealthy = true;
+        return data as SchemeSuggestionResponse;
+      }
+    } catch (err) {
+      console.warn('[SchemeNavigatorApi] /schemes/suggest failed or timed out, using local fallback.', err);
+    }
+
+    return this.suggestSchemesLocally(query, profile);
+  }
+
+  /**
+   * Deterministic local fallback for need matching
+   */
+  private suggestSchemesLocally(query: string, profile?: UserProfile): SchemeSuggestionResponse {
+    const q = query.toLowerCase();
+    const hints: Record<string, any> = {};
+
+    if (/farmer|kisan|crop|agriculture|farming|krishi|khet/i.test(q)) hints.is_farmer = true;
+    if (/student|college|school|scholarship|study|tuition/i.test(q)) hints.is_student = true;
+    if (/daughter|girl|woman|women|female|mahila|beti/i.test(q)) hints.gender = 'female';
+    if (/bpl|poor|poverty|low income|garib/i.test(q)) hints.is_bpl = true;
+    if (/disability|disabled|handicap|pwd/i.test(q)) hints.is_pwd = true;
+
+    const needs: string[] = [];
+    if (hints.is_farmer) needs.push('Agricultural & Farmer Income Support');
+    if (/hospital|treatment|health|medical|ayushman|5 lakh/i.test(q)) needs.push('Healthcare & Free Medical Treatment');
+    if (/loan|business|vendor|shop|street|collateral|svanidhi|mudra/i.test(q)) needs.push('Micro-Enterprise & Collateral-Free Credit');
+    if (/daughter|girl|sukanya|samriddhi|savings/i.test(q)) needs.push('Girl Child Savings & Higher Education Security');
+    if (hints.is_student) needs.push('Student Scholarships & Educational Grants');
+    if (!needs.length) needs.push('General Welfare & Income Support');
+
+    // Score local VERIFIED_SCHEMES
+    const scored = VERIFIED_SCHEMES.map(s => {
+      let score = 0.5;
+      const text = `${s.name} ${s.id} ${s.tagline} ${s.simpleDescription} ${s.benefitAmountOrDescription} ${s.primaryPriority}`.toLowerCase();
+
+      if (hints.is_farmer && (s.primaryPriority === 'farming' || /kisan|farmer/i.test(text))) score += 0.45;
+      if (/health|treatment|hospital|ayushman/i.test(q) && /health|hospital|treatment/i.test(text)) score += 0.45;
+      if (/loan|business|vendor|mudra/i.test(q) && (s.primaryPriority === 'micro_credit' || /loan|business/i.test(text))) score += 0.45;
+      if (/daughter|girl|sukanya/i.test(q) && (s.beneficiaryGroup === 'women' || /girl|daughter|sukanya/i.test(text))) score += 0.45;
+      if (hints.is_student && (s.primaryPriority === 'scholarships' || /scholarship|student/i.test(text))) score += 0.45;
+
+      // keyword matches
+      const words = q.split(/\s+/).filter(w => w.length > 3);
+      for (const w of words) {
+        if (text.includes(w)) score += 0.1;
+      }
+
+      const relevance = Math.min(Math.round(score * 100) / 100, 0.98);
+      return { scheme: s, relevance };
+    })
+    .filter(item => item.relevance >= 0.65)
+    .sort((a, b) => b.relevance - a.relevance)
+    .slice(0, 5);
+
+    const recommendations: SuggestedSchemeItem[] = scored.map(item => {
+      const schema = this.convertLocalSchemeToSchema(item.scheme);
+      let whyRec = `Directly matches your need by providing ${item.scheme.benefitAmountOrDescription}.`;
+      if (item.scheme.name) {
+        whyRec = `${item.scheme.name} addresses your requirement: ${item.scheme.benefitAmountOrDescription}.`;
+      }
+
+      return {
+        scheme: schema,
+        relevance_score: item.relevance,
+        why_recommended: whyRec,
+        eligibility_result: {
+          scheme_id: item.scheme.id,
+          scheme_name: item.scheme.name,
+          is_eligible: true,
+          match_score: item.relevance,
+          failed_criteria: [],
+          requires_misc_check: item.scheme.has_misc_conditions,
+          misc_conditions_to_verify: item.scheme.misc_conditions || []
+        }
+      };
+    });
+
+    return {
+      query,
+      understood_needs: needs,
+      extracted_profile_hints: hints,
+      recommendations
+    };
+  }
+
+  /**
    * Helper: Convert UserProfile to backend UserProfile format
    */
   public toBackendUserProfile(profile: UserProfile): BackendUserProfile {
@@ -703,7 +818,7 @@ export class SchemeNavigatorApiClient {
         ? Boolean(profile.is_bpl)
         : (profile.annualFamilyIncome ?? 120000) <= 100000;
 
-    return {
+    const payload: BackendUserProfile = {
       age: profile.age ?? 24,
       gender: (profile.gender || 'male').toLowerCase(),
       state: profile.state || 'Maharashtra',
@@ -713,9 +828,15 @@ export class SchemeNavigatorApiClient {
       is_farmer: Boolean(isFarmer),
       is_student: Boolean(isStudent),
       is_pwd: Boolean(profile.is_pwd),
-      is_bpl: Boolean(isBpl),
-      needs_description: profile.needs_description || (profile.priorities || []).join(', ') || null
+      is_bpl: Boolean(isBpl)
     };
+
+    const needsDesc = profile.needs_description || (profile.priorities && profile.priorities.length > 0 ? profile.priorities.join(', ') : null);
+    if (needsDesc) {
+      payload.needs_description = needsDesc;
+    }
+
+    return payload;
   }
 
   /**

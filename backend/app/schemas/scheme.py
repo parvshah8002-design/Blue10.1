@@ -211,3 +211,44 @@ class EligibilityResult(BaseModel):
         None,
         description="Plain-language explanation of missing criteria when not eligible",
     )
+
+
+# ---------------------------------------------------------------------------
+# Citizen User Profile
+# ---------------------------------------------------------------------------
+
+class UserProfile(BaseModel):
+    age: int = 25
+    annual_income_inr: float = 120000.0
+    gender: str = "any"                             # "male" | "female" | "transgender" | "any"
+    state: str = "any"                              # 2-letter code e.g. "MH"
+    category: str = "general"                       # "general" | "obc" | "sc" | "st" | "ews"
+    marital_status: str = "single"                  # "single" | "married" | "widowed" | "divorced" | "any"
+    is_pwd: bool = False
+    is_bpl: bool = False
+    is_student: bool = False
+    is_farmer: bool = False
+    needs_description: Optional[str] = None         # Free text for RAG search
+
+
+# ---------------------------------------------------------------------------
+# Need-based AI suggestion models
+# ---------------------------------------------------------------------------
+
+class SchemeSuggestionRequest(BaseModel):
+    query: str = Field(..., min_length=3, description="Citizen's natural language description of their situation or need")
+    user_profile: Optional[UserProfile] = None
+
+
+class SuggestedSchemeItem(BaseModel):
+    scheme: SchemeSchema
+    relevance_score: float = Field(..., ge=0.0, le=1.0, description="How closely this scheme matches the user's stated need")
+    why_recommended: str = Field(..., description="1-2 sentence personalized explanation of how this scheme solves the user's specific need")
+    eligibility_result: Optional[EligibilityResult] = None
+
+
+class SchemeSuggestionResponse(BaseModel):
+    query: str
+    understood_needs: list[str] = Field(default_factory=list, description="List of detected need categories/tags")
+    extracted_profile_hints: dict = Field(default_factory=dict, description="Inferred demographic attributes from the query")
+    recommendations: list[SuggestedSchemeItem] = Field(default_factory=list)

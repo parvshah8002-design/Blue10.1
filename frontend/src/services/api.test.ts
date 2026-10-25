@@ -71,4 +71,14 @@ describe('Scheme Eligibility Navigator API Client & Contracts', () => {
     expect(bulk.total).toBe(2);
     expect(bulk.scraped.length).toBe(2);
   });
+
+  it('shortlists schemes based on natural language citizen need', async () => {
+    const res = await schemeNavigatorApi.suggestSchemes('Small farmer needing yearly income support');
+    expect(res.query).toBe('Small farmer needing yearly income support');
+    expect(res.understood_needs.length).toBeGreaterThan(0);
+    expect(res.extracted_profile_hints.is_farmer).toBe(true);
+    expect(res.recommendations.length).toBeGreaterThan(0);
+    expect(res.recommendations[0].relevance_score).toBeGreaterThanOrEqual(0.65);
+    expect(res.recommendations[0].why_recommended).toBeDefined();
+  });
 });

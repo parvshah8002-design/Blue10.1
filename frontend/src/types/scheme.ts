@@ -173,3 +173,26 @@ export type AppView =
   | 'dashboard'
   | 'scheme_detail'
   | 'compare';
+
+export interface SuggestedSchemeItem {
+  scheme: any;
+  relevance_score: number;
+  why_recommended: string;
+  eligibility_result?: {
+    scheme_id: string;
+    scheme_name: string;
+    is_eligible: boolean;
+    match_score: number;
+    failed_criteria: string[];
+    requires_misc_check?: boolean;
+    misc_conditions_to_verify?: string[];
+    why_not_explanation?: string | null;
+  } | null;
+}
+
+export interface SchemeSuggestionResponse {
+  query: string;
+  understood_needs: string[];
+  extracted_profile_hints: Record<string, any>;
+  recommendations: SuggestedSchemeItem[];
+}

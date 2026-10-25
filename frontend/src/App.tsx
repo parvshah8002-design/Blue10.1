@@ -274,6 +274,7 @@ export function App() {
             onSortChange={setCurrentSortBy}
             currentSortBy={currentSortBy}
             onSchemeImported={handleSchemeImported}
+            onUpdateProfile={(hints) => setProfile(prev => ({ ...prev, ...hints }))}
           />
         )}
 
