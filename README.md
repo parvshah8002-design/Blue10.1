@@ -11,8 +11,8 @@
 ### 🧠 Zero-Hallucination Eligibility Engine
 All numeric and categorical criteria (Age, Income, State, Gender, Category, BPL, PwD, Farmer, Student) are evaluated using **pure Python deterministic comparisons** in FastAPI — the LLM is **never** used to decide eligibility.
 
-### 💬 Gemma-Powered "Why Not" Explainability
-When you fail to qualify, Google Gemma explains in plain language *exactly* what you are missing — e.g., *"Your annual income of ₹3,20,000 exceeds the maximum allowed ₹2,50,000 for PM Awas Yojana."*
+### 💬 Gemini-Powered "Why Not" Explainability
+When you fail to qualify, Google Gemini explains in plain language *exactly* what you are missing — e.g., *"Your annual income of ₹3,20,000 exceeds the maximum allowed ₹2,50,000 for PM Awas Yojana."*
 
 ### 🌐 22+ Indian Languages
 Built on **Bhashini API (ULCA)** for Speech-to-Text, Translation, and Text-to-Speech — supporting all 22 Indian scheduled languages.
