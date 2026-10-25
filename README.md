@@ -1,4 +1,4 @@
-# 🏛️ SamriddhiSetu — AI-Powered Government Scheme Navigator
+# 🏛️ SchemeSaathe — AI-Powered Government Scheme Navigator
 
 > **Hackathon Project · Built for Hactomber 2026**
 >
