@@ -419,7 +419,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                   Describe Your Situation / Need (AI Shortlister)
                 </h2>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-teal-500 text-white shadow-xs">
-                  Gemma AI
+                  Gemini AI
                 </span>
               </div>
               <p className="text-xs text-[#667085] dark:text-slate-400 mt-0.5">
