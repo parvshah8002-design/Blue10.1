@@ -1,10 +1,10 @@
 fastapi
-uvicorn
+uvicorn[standard]
 pydantic
 pydantic-settings
 beautifulsoup4
 httpx
 requests
 python-dotenv
-google-genai
+google-generativeai
 lxml

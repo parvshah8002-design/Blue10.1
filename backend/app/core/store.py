@@ -36,9 +36,6 @@ _ON_VERCEL: bool = bool(os.environ.get("VERCEL"))
 _BACKEND_ROOT: Path = Path(__file__).resolve().parent.parent.parent
 SCHEMES_FILE: Path = _BACKEND_ROOT / "data" / "schemes.json"
 
-# Ensure the directory exists
-SCHEMES_FILE.parent.mkdir(parents=True, exist_ok=True)
-
 # In-process lock — prevents concurrent writes from corrupting the JSON file.
 _lock = Lock()
 
@@ -58,7 +55,9 @@ def _read_raw() -> list[dict[str, Any]]:
 
 
 def _write_raw(records: list[dict[str, Any]]) -> None:
-    """Atomically write *records* to schemes.json."""
+    """Atomically write *records* to schemes.json (local dev only — never called on Vercel)."""
+    # Only create the directory here, at write time, so import doesn't crash on read-only FS.
+    SCHEMES_FILE.parent.mkdir(parents=True, exist_ok=True)
     tmp = SCHEMES_FILE.with_suffix(".tmp")
     tmp.write_text(json.dumps(records, ensure_ascii=False, indent=2), encoding="utf-8")
     tmp.replace(SCHEMES_FILE)
