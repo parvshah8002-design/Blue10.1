@@ -259,3 +259,6 @@ Built by **Team Blue10.1** for **Hactomber 2026**
 ## 📄 License
 
 MIT License — see [LICENSE](frontend/LICENSE) for details.
+
+Presentation Link:
+https://drive.google.com/file/d/19sDl5j-LmlVUBh4O3ULi1ymxPrsUXDZ8/view
